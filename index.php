@@ -51,3 +51,40 @@ html
 
  </body>
  </html>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+const messagesElemet=document.getElementById("chat-box");
+fetch('./messages.json')
+.then(response=>response.json())
+.then(data=>{
+  data.forEach(item=>{
+  
+let messageElem=document.createElement("div");
+messageElem.className="received-message p-2 my-2 rounded";
+
+let messageContent=`
+  <strong>${item.username}:</strong> ${item.messageText}<br>
+  <small class="text-muted">${item.timestamp}</small>
+`;
+    //Eğer varsa dosya URL'sini ekle
+if(item.fileURL) {
+messageContent+=`
+<br><a href='${item.fileURL}' target='_blank'>Gönderilen Dosya</a>`;
+}
+
+messageElem.innerHTML=messageContent;
+messagesElemet.appendChild(messageElem);
+
+// Mesaj kutusunu aşağı kaydır(scrollda)
+messagesElement.scrollTop = messagesElement.scrollHeight;
+});
+  
+})
+.catch(error=>{
+  console.error("Hata: ",error);
+});
+
+});
+
+</script>
